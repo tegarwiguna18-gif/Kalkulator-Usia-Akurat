@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Usia Akurat | Creator Tegar Wiguna</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#7c3aed',
+                        accent: '#f97316',
+                        dark: '#1e293b',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .bg-gradient-main {
+                background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            }
+            .card-shadow {
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            }
+            .input-style {
+                @apply w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all;
+            }
+            .btn-gradient {
+                background: linear-gradient(90deg, #2563eb 0%, #7c3aed 100%);
+                transition: all 0.3s ease;
+            }
+            .btn-gradient:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+            }
+            .result-card {
+                backdrop-filter: blur(10px);
+                background: rgba(255, 255, 255, 0.9);
+            }
+            .number-big {
+                font-variant-numeric: tabular-nums;
+            }
+            .logo-tw {
+                background: linear-gradient(135deg, #2563eb, #7c3aed);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-main flex flex-col items-center justify-center p-4 font-sans">
+    
+    <div class="w-full max-w-xl">
+        <!-- Header dengan Logo -->
+        <div class="text-center mb-6 text-white">
+            <div class="flex items-center justify-center gap-3 mb-3">
+                <!-- Logo TW -->
+                <div class="bg-white p-2 rounded-full shadow-lg">
+                    <span class="text-2xl font-extrabold logo-tw">TW</span>
+                </div>
+            </div>
+            <h1 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-2">Kalkulator Usia Akurat</h1>
+            <p class="text-blue-100">Hitung usia Anda dengan tepat dalam hitungan detik</p>
+        </div>
+
+        <!-- Konten Utama -->
+        <div class="bg-white rounded-2xl p-6 md:p-8 card-shadow">
+            <!-- Form Input -->
+            <div class="mb-6">
+                <label class="block text-gray-700 font-medium mb-2">Tanggal Lahir Anda</label>
+                <input type="date" id="tanggalLahir" class="input-style text-lg" required>
+            </div>
+
+            <button id="hitungBtn" class="btn-gradient w-full py-3 px-6 text-white font-semibold rounded-xl text-lg">
+                <i class="fa fa-calculator mr-2"></i> Hitung Usia Saya
+            </button>
+
+            <!-- Hasil Perhitungan -->
+            <div id="hasil" class="hidden mt-8">
+                <div class="border-t border-gray-200 pt-6">
+                    <h3 class="text-center text-xl font-semibold text-dark mb-4">Hasil Perhitungan</h3>
+                    
+                    <div class="grid grid-cols-3 gap-4 mb-6">
+                        <div class="bg-blue-50 rounded-xl p-4 text-center">
+                            <p id="usiaTahun" class="text-3xl font-bold text-primary number-big">0</p>
+                            <p class="text-sm text-gray-600">Tahun</p>
+                        </div>
+                        <div class="bg-purple-50 rounded-xl p-4 text-center">
+                            <p id="usiaBulan" class="text-3xl font-bold text-secondary number-big">0</p>
+                            <p class="text-sm text-gray-600">Bulan</p>
+                        </div>
+                        <div class="bg-orange-50 rounded-xl p-4 text-center">
+                            <p id="usiaHari" class="text-3xl font-bold text-accent number-big">0</p>
+                            <p class="text-sm text-gray-600">Hari</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-xl p-4 space-y-3 text-gray-700">
+                        <p><i class="fa fa-calendar-check-o mr-2 text-primary"></i> Total Anda telah hidup selama <span id="totalHari" class="font-semibold">0</span> hari</p>
+                        <p><i class="fa fa-birthday-cake mr-2 text-accent"></i> Ulang tahun berikutnya tinggal <span id="sisaHari" class="font-semibold">0</span> hari lagi</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer dengan Nama Creator -->
+        <div class="text-center mt-6 text-white/90 text-sm space-y-1">
+            <p class="font-medium">Dibuat oleh: Creator Tegar Wiguna</p>
+            <p>© 2026 Kalkulator Usia Akurat | Semua Hak Dilindungi</p>
+        </div>
+    </div>
+
+    <script>
+        const hitungBtn = document.getElementById('hitungBtn');
+        const tanggalLahirInput = document.getElementById('tanggalLahir');
+        const hasilDiv = document.getElementById('hasil');
+
+        // Elemen hasil
+        const usiaTahunEl = document.getElementById('usiaTahun');
+        const usiaBulanEl = document.getElementById('usiaBulan');
+        const usiaHariEl = document.getElementById('usiaHari');
+        const totalHariEl = document.getElementById('totalHari');
+        const sisaHariEl = document.getElementById('sisaHari');
+
+        hitungBtn.addEventListener('click', hitungUsia);
+        tanggalLahirInput.addEventListener('keydown', (e) => {
+            if(e.key === 'Enter') hitungUsia();
+        });
+
+        function hitungUsia() {
+            const tanggalLahirValue = tanggalLahirInput.value;
+            if (!tanggalLahirValue) {
+                alert('Silakan masukkan tanggal lahir Anda terlebih dahulu!');
+                return;
+            }
+
+            const tanggalLahir = new Date(tanggalLahirValue);
+            const hariIni = new Date();
+
+            if (tanggalLahir > hariIni) {
+                alert('Tanggal lahir tidak boleh melebihi hari ini!');
+                return;
+            }
+
+            // Hitung usia detail
+            let tahun = hariIni.getFullYear() - tanggalLahir.getFullYear();
+            let bulan = hariIni.getMonth() - tanggalLahir.getMonth();
+            let hari = hariIni.getDate() - tanggalLahir.getDate();
+
+            if (hari < 0) {
+                bulan--;
+                const hariTerakhirBulanLalu = new Date(hariIni.getFullYear(), hariIni.getMonth(), 0).getDate();
+                hari += hariTerakhirBulanLalu;
+            }
+
+            if (bulan < 0) {
+                tahun--;
+                bulan += 12;
+            }
+
+            // Hitung total hari hidup
+            const selisihWaktu = hariIni - tanggalLahir;
+            const totalHari = Math.floor(selisihWaktu / (1000 * 60 * 60 * 24));
+
+            // Hitung sisa hari menuju ulang tahun berikutnya
+            let ulangTahunBerikutnya = new Date(hariIni.getFullYear(), tanggalLahir.getMonth(), tanggalLahir.getDate());
+            if (ulangTahunBerikutnya < hariIni) {
+                ulangTahunBerikutnya.setFullYear(hariIni.getFullYear() + 1);
+            }
+            const sisaHari = Math.ceil((ulangTahunBerikutnya - hariIni) / (1000 * 60 * 60 * 24));
+
+            // Tampilkan hasil dengan animasi
+            hasilDiv.classList.remove('hidden');
+            
+            // Isi nilai
+            usiaTahunEl.textContent = tahun;
+            usiaBulanEl.textContent = bulan;
+            usiaHariEl.textContent = hari;
+            totalHariEl.textContent = totalHari.toLocaleString('id-ID');
+            sisaHariEl.textContent = sisaHari;
+
+            // Scroll ke hasil jika di HP
+            hasilDiv.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        }
+
+        // Set tanggal maksimal hari ini
+        const hariIniFormat = new Date().toISOString().split('T')[0];
+        tanggalLahirInput.setAttribute('max', hariIniFormat);
+    </script>
+</body>
+</html>
